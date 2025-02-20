@@ -12,7 +12,7 @@ export function NoteEditor() {
 
   useEffect(() => {
     if (state.activeNoteId) {
-      const activeNote = state.notes.find((note) => note.id === state.activeNoteId)
+      const activeNote = state.notes.find((note) => note._id === state.activeNoteId)
       if (activeNote) {
         setTitle(activeNote.title)
         setContent(activeNote.content)
@@ -27,30 +27,36 @@ export function NoteEditor() {
     const newTitle = e.target.value
     setTitle(newTitle)
     if (state.activeNoteId) {
-      dispatch({
-        type: "UPDATE_NOTE",
-        payload: {
-          id: state.activeNoteId,
-          title: newTitle,
-          content,
-          updatedAt: new Date(),
-        },
-      })
+      const activeNote = state.notes.find((note) => note._id === state.activeNoteId)
+      if (activeNote) {
+        dispatch({
+          type: "UPDATE_NOTE",
+          payload: {
+            ...activeNote,
+            title: newTitle,
+            content,
+            updatedAt: new Date(),
+          },
+        })
+      }
     }
   }
 
   const handleContentChange = (newContent: string) => {
     setContent(newContent)
     if (state.activeNoteId) {
-      dispatch({
-        type: "UPDATE_NOTE",
-        payload: {
-          id: state.activeNoteId,
-          title,
-          content: newContent,
-          updatedAt: new Date(),
-        },
-      })
+      const activeNote = state.notes.find(note => note._id === state.activeNoteId)
+      if (activeNote) {
+        dispatch({
+          type: "UPDATE_NOTE",
+          payload: {
+            ...activeNote,
+            title,
+            content: newContent,
+            updatedAt: new Date(),
+          },
+        })
+      }
     }
   }
 
@@ -69,4 +75,3 @@ export function NoteEditor() {
     </div>
   )
 }
-

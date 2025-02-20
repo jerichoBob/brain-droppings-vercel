@@ -1,0 +1,23 @@
+[
+  {
+    "title": "Meeting Notes: Project Kickoff",
+    "content": "Key points discussed:\n- Timeline set for Q2 completion\n- Resource allocation finalized\n- Next steps identified for team members\n- Weekly sync meetings scheduled",
+    "tags": ["meeting", "project-management", "planning"],
+    "createdAt": "2025-02-11T18:27:59.000Z",
+    "updatedAt": "2025-02-11T18:27:59.000Z"
+  },
+  {
+    "title": "Tech Stack Research",
+    "content": "Evaluation of potential technologies:\n1. Frontend: Next.js + TypeScript\n2. Backend: Node.js with Express\n3. Database: MongoDB\n4. Deployment: Vercel\n\nPros and cons analysis pending.",
+    "tags": ["research", "technology", "architecture"],
+    "createdAt": "2025-02-11T17:15:00.000Z",
+    "updatedAt": "2025-02-11T17:45:00.000Z"
+  },
+  {
+    "title": "Weekly Goals",
+    "content": "This week's objectives:\n- Complete API documentation\n- Set up CI/CD pipeline\n- Review pending PRs\n- Update dependencies\n\nPriority: High",
+    "tags": ["goals", "planning", "tasks"],
+    "createdAt": "2025-02-11T16:00:00.000Z",
+    "updatedAt": "2025-02-11T16:30:00.000Z"
+  }
+]

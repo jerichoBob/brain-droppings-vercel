@@ -16,6 +16,7 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML())
     },
+    immediatelyRender: false,
   })
 
   useEffect(() => {
@@ -30,4 +31,3 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
 
   return <EditorContent editor={editor} className="prose max-w-none p-4" />
 }
-
