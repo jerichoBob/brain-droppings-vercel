@@ -67,7 +67,7 @@ export function NotesListSidebar() {
       <Button
         variant="ghost"
         size="icon"
-        className="absolute -right-4 top-2 z-10 h-8 w-8 rounded-full border bg-background"
+        className="absolute -right-4 bottom-2 z-10 h-8 w-8 rounded-full border bg-background"
         onClick={() => setIsCollapsed(!isCollapsed)}
       >
         {isCollapsed ? (

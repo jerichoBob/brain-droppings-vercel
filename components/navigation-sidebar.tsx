@@ -40,7 +40,7 @@ export function NavigationSidebar() {
       <Button
         variant="ghost"
         size="icon"
-        className="absolute -right-4 top-2 z-10 h-8 w-8 rounded-full border bg-background"
+        className="absolute -right-4 bottom-2 z-10 h-8 w-8 rounded-full border bg-background"
         onClick={() => setIsCollapsed(!isCollapsed)}
       >
         {isCollapsed ? (
@@ -71,23 +71,23 @@ export function NavigationSidebar() {
               />
             </div>
             <Button 
-              className="w-full justify-start gap-2 bg-emerald-500 hover:bg-emerald-600 text-white" 
+              className="w-full justify-start gap-2 bg-emerald-500 hover:bg-emerald-600 text-white transition-all duration-300" 
               variant="default" 
               onClick={handleNewNote}
             >
-              <FileText className="h-4 w-4" />
-              New Note
+              <FileText className="h-4 w-4 transition-transform duration-300" />
+              <span className="transition-opacity duration-300">New Note</span>
             </Button>
           </>
         )}
         
         {isCollapsed && (
           <Button
-            className="w-10 h-10 p-0 bg-emerald-500 hover:bg-emerald-600 text-white"
+            className="w-10 h-10 p-0 bg-emerald-500 hover:bg-emerald-600 text-white flex items-center justify-center transition-all duration-300"
             variant="default"
             onClick={handleNewNote}
           >
-            <FileText className="h-4 w-4" />
+            <FileText className="h-4 w-4 transition-transform duration-300" />
           </Button>
         )}
       </div>
@@ -108,12 +108,12 @@ export function NavigationSidebar() {
                 key={label}
                 variant="ghost"
                 className={cn(
-                  "justify-start gap-2",
-                  isCollapsed && "w-10 h-10 p-0 mx-auto"
+                  "justify-start gap-2 transition-all duration-300",
+                  isCollapsed ? "w-10 h-10 p-0 mx-auto flex items-center justify-center" : "px-4"
                 )}
               >
-                <Icon className="h-4 w-4" />
-                {!isCollapsed && label}
+                <Icon className="h-4 w-4 transition-transform duration-300" />
+                {!isCollapsed && <span className="transition-opacity duration-300">{label}</span>}
               </Button>
             ))}
           </div>
