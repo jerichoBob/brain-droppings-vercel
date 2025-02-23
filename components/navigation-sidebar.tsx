@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Home, Star, Clock, Tag, Share2, Trash, Settings, Plus, Search, FileText, ChevronLeft, ChevronRight } from "lucide-react"
+import { Home, FileText, Book, Download, Search, ChevronLeft, ChevronRight } from "lucide-react"
 import { AuthButton } from "@/components/auth-button"
 import { useNotes, type Note } from "@/contexts/NotesContext"
 import { useEffect, useState } from "react"
@@ -97,24 +97,21 @@ export function NavigationSidebar() {
           <div className="flex flex-col gap-1">
             {[
               { icon: Home, label: "Home" },
-              { icon: Star, label: "Starred" },
-              { icon: Clock, label: "Recent" },
-              { icon: Tag, label: "Tags" },
-              { icon: Share2, label: "Shared" },
-              { icon: Trash, label: "Trash" },
-              { icon: Settings, label: "Settings" },
+              { icon: FileText, label: "Notes" },
+              { icon: Book, label: "Notebooks" },
+              { icon: Download, label: "Import" },
             ].map(({ icon: Icon, label }) => (
-              <Button
+              <Link
                 key={label}
-                variant="ghost"
+                href={`/${label.toLowerCase()}`}
                 className={cn(
-                  "justify-start gap-2 transition-all duration-300",
-                  isCollapsed ? "w-10 h-10 p-0 mx-auto flex items-center justify-center" : "px-4"
+                  "flex items-center gap-2 px-4 py-2 text-sm rounded-md hover:bg-accent transition-colors",
+                  isCollapsed && "justify-center px-0"
                 )}
               >
-                <Icon className="h-4 w-4 transition-transform duration-300" />
-                {!isCollapsed && <span className="transition-opacity duration-300">{label}</span>}
-              </Button>
+                <Icon className="h-4 w-4" />
+                {!isCollapsed && <span>{label}</span>}
+              </Link>
             ))}
           </div>
         </div>

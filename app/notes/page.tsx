@@ -1,7 +1,5 @@
-"use client"
-
 import { NoteApp } from "@/components/note-app"
 
-export default function NotePage() {
+export default function NotesPage() {
   return <NoteApp />
 }
