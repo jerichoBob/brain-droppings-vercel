@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Home, FileText, Book, Download, Search, ChevronLeft, ChevronRight } from "lucide-react"
@@ -7,29 +9,26 @@ import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 
 export function NavigationSidebar() {
-  const { dispatch } = useNotes()
-  const [isCollapsed, setIsCollapsed] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('navSidebarCollapsed')
-      return saved ? JSON.parse(saved) : false
+  const { dispatch, createNote } = useNotes()
+  const [isCollapsed, setIsCollapsed] = useState(false)
+
+  useEffect(() => {
+    // Only access localStorage after component mounts
+    const saved = localStorage.getItem('navSidebarCollapsed')
+    if (saved !== null) {
+      setIsCollapsed(JSON.parse(saved))
     }
-    return false
-  })
+  }, [])
 
   useEffect(() => {
     localStorage.setItem('navSidebarCollapsed', JSON.stringify(isCollapsed))
   }, [isCollapsed])
 
   const handleNewNote = () => {
-    const newNote: Note = {
-      _id: new Date().getTime().toString(),
+    createNote({
       title: "Untitled Note",
       content: "",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }
-    dispatch({ type: "ADD_NOTE", payload: newNote })
-    dispatch({ type: "SET_ACTIVE_NOTE", payload: newNote._id })
+    })
   }
 
   return (

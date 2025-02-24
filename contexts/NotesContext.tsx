@@ -68,6 +68,9 @@ function notesReducer(state: NotesState, action: NotesAction): NotesState {
 const NotesContext = createContext<{
   state: NotesState
   dispatch: React.Dispatch<NotesAction>
+  createNote: (note: Omit<Note, '_id' | 'createdAt' | 'updatedAt'>) => Promise<void>
+  updateNote: (id: string, updates: Partial<Note>) => Promise<void>
+  deleteNote: (id: string) => Promise<void>
 } | null>(null)
 
 export function NotesProvider({ children }: { children: ReactNode }) {
@@ -89,8 +92,72 @@ export function NotesProvider({ children }: { children: ReactNode }) {
     fetchNotes()
   }, [])
 
+  const createNote = async (note: Omit<Note, '_id' | 'createdAt' | 'updatedAt'>) => {
+    try {
+      const response = await fetch('/api/notes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(note),
+      })
+
+      if (!response.ok) throw new Error('Failed to create note')
+      
+      const { id } = await response.json()
+      const newNote: Note = {
+        ...note,
+        _id: id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
+      
+      dispatch({ type: 'ADD_NOTE', payload: newNote })
+      dispatch({ type: 'SET_ACTIVE_NOTE', payload: id })
+    } catch (error) {
+      console.error('Error creating note:', error)
+      dispatch({ type: 'SET_ERROR', payload: 'Failed to create note' })
+    }
+  }
+
+  const updateNote = async (id: string, updates: Partial<Note>) => {
+    try {
+      const response = await fetch('/api/notes', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, ...updates }),
+      })
+
+      if (!response.ok) throw new Error('Failed to update note')
+      
+      const updatedNote: Note = {
+        ...state.notes.find(note => note._id === id)!,
+        ...updates,
+        updatedAt: new Date(),
+      }
+      
+      dispatch({ type: 'UPDATE_NOTE', payload: updatedNote })
+    } catch (error) {
+      console.error('Error updating note:', error)
+      dispatch({ type: 'SET_ERROR', payload: 'Failed to update note' })
+    }
+  }
+
+  const deleteNote = async (id: string) => {
+    try {
+      const response = await fetch(`/api/notes?id=${id}`, {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) throw new Error('Failed to delete note')
+      
+      dispatch({ type: 'DELETE_NOTE', payload: id })
+    } catch (error) {
+      console.error('Error deleting note:', error)
+      dispatch({ type: 'SET_ERROR', payload: 'Failed to delete note' })
+    }
+  }
+
   return (
-    <NotesContext.Provider value={{ state, dispatch }}>
+    <NotesContext.Provider value={{ state, dispatch, createNote, updateNote, deleteNote }}>
       {children}
     </NotesContext.Provider>
   )

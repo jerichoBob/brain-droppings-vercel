@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createNote, getAllNotes } from '@/lib/db'
+import { createNote, getAllNotes, updateNote, deleteNote } from '@/lib/db'
 import { Note } from '@/lib/types'
 
 export async function GET() {
@@ -41,6 +41,64 @@ export async function POST(request: Request) {
     console.error('Error creating note:', error)
     return NextResponse.json(
       { error: 'Failed to create note' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function PUT(request: Request) {
+  try {
+    const { id, ...updates } = await request.json()
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Note ID is required' },
+        { status: 400 }
+      )
+    }
+    
+    const success = await updateNote(id, updates)
+    if (!success) {
+      return NextResponse.json(
+        { error: 'Note not found' },
+        { status: 404 }
+      )
+    }
+    
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error('Error updating note:', error)
+    return NextResponse.json(
+      { error: 'Failed to update note' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url)
+    const id = searchParams.get('id')
+    
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Note ID is required' },
+        { status: 400 }
+      )
+    }
+    
+    const success = await deleteNote(id)
+    if (!success) {
+      return NextResponse.json(
+        { error: 'Note not found' },
+        { status: 404 }
+      )
+    }
+    
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error('Error deleting note:', error)
+    return NextResponse.json(
+      { error: 'Failed to delete note' },
       { status: 500 }
     )
   }
